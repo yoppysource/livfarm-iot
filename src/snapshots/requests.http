@@ -1,0 +1,21 @@
+### Get All Snapshots
+GET http://localhost:3000/snapshots
+
+### Create Snapshots
+POST http://localhost:3000/snapshots
+content-type: application/json
+
+{
+  "planter": "619494f04112460768fb146f",
+  "planterId": "test12",
+  "temperature": 22,
+  "humidity": 11.22,
+  "lux": 2312.12,
+  "co2ppm": 122.22,
+  "waterTemperature": 22.12,
+  "ph": 2.3,
+  "ec": 2.2
+}
+
+### Create Snapshots
+GET http://localhost:3000/snapshots/test

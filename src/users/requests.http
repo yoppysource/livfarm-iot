@@ -1,0 +1,50 @@
+### Create New User
+POST http://localhost:3000/auth/signup
+content-type: application/json
+
+{
+  "email": "request@test.com",
+  "password": "asdf",
+  "name": "test"
+}
+
+### Sign in correctly
+POST http://localhost:3000/auth/signin
+content-type: application/json
+
+{
+  "email": "request@test.com",
+  "password": "asdf"
+}
+
+### Sign in correctly
+POST http://localhost:3000/auth/signin
+content-type: application/json
+
+{
+  "email": "admin@livfarm.com",
+  "password": "090812"
+}
+
+
+### Sign out correctly
+POST http://localhost:3000/auth/signout
+content-type: application/json
+
+### Sign in correctly
+Get http://localhost:3000/auth/whoami
+### Find a particular user with a given ID
+GET http://localhost:3000/auth/1
+### Find all users with a given enail
+GET http://localhost:3000/auth?email=asdf3@asdf.com
+
+### Update a user given id
+PATCH http://localhost:3000/auth/1
+content-type: application/json
+
+{
+  "password": "12331"
+}
+
+### Delete a user given id
+DELETE http://localhost:3000/auth/1
