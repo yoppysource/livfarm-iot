@@ -5,8 +5,8 @@ GET http://localhost:3000/planters/test2
 GET http://localhost:3000/planters
 
 ### Initialize Arduino
-//POST http://34.64.144.6:3000/planters
-POST http://127.0.0.1:3000/planters
+POST http://34.64.144.6:3000/planters
+//POST http://127.0.0.1:3000/planters
 content-type: application/json
 
 {
@@ -23,8 +23,8 @@ GET http://34.64.144.6:3000/planters/61b82803be16ca6e1b9af29e/current
 
 
 ### Initialize Camera
-//POST http://34.64.144.6:3000/planters/:planterId/cameras/:cameraId
-POST http://127.0.0.1:3000/planters/testy11111/cameras/sgf12-04
+POST http://34.64.144.6:3000/planters/testy11111/cameras/sgf12-04
+//POST http://127.0.0.1:3000/planters/testy11111/cameras/sgf12-04
 content-type: application/json
 
 {
@@ -37,8 +37,8 @@ content-type: application/json
 }
 
 ### Initialize Camera
-//PATCH http://34.64.144.6:3000/planters/:planterId/cameras/:cameraId
-PATCH http://127.0.0.1:3000/planters/testy11111/cameras/sgf12-04
+PATCH http://34.64.144.6:3000/planters/testy11111/cameras/sgf12-04
+//PATCH http://127.0.0.1:3000/planters/testy11111/cameras/sgf12-04
 content-type: application/json
 
 {

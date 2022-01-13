@@ -46,7 +46,7 @@ export class SnapshotsService {
           this.httpService.get(planter.getUrl(['current'])),
         );
         if (res.status != 200) {
-          throw new NotFoundException('cannot link to arduino');
+          continue;
         }
         Object.assign(snapshot, res.data);
         for (const cam of planter.cameras) {
@@ -57,8 +57,8 @@ export class SnapshotsService {
             imageName,
             `http://${cam.publicIP}:${cam.webPort}`,
           );
-          snapshot.plantId = cam.plantId;
-          snapshot.transferredAt = cam.transferredAt;
+          if (cam.plantId) snapshot.plantId = cam.plantId;
+          if (cam.transferredAt) snapshot.transferredAt = cam.transferredAt;
           snapshot.numOfPixel = numOfPixel;
           snapshot.imageName = imageName;
           return snapshot.save();
