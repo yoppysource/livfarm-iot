@@ -35,7 +35,7 @@ export class Planter {
         webPort: Number,
         // Camera는 알 필요 없음  @Prop()
         plantId: String,
-        transplantedAt: Date,
+        transferredAt: String,
       },
     ]),
   )
@@ -65,7 +65,7 @@ export interface Camera {
   readonly streamingPort: number;
   readonly localIP: string; // before creation
   readonly plantId?: string;
-  readonly transplantedAt?: Date;
+  readonly transferredAt?: string;
 }
 
 export const PlanterSchema = SchemaFactory.createForClass(Planter);

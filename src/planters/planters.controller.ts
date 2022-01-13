@@ -4,6 +4,7 @@ import { InitializePlanterDTO } from './dto/initialize-planter.dto';
 import { PlantersService } from './planters.service';
 import { ControlService } from './control.service';
 import { UpdateSettingDto } from './dto/update-setting.dto';
+import { UpdateCameraDTO } from './dto/update-camera.dto';
 
 @Controller('planters')
 export class PlantersController {
@@ -33,7 +34,6 @@ export class PlantersController {
     return this.plantersService.createOrUpdate(body);
   }
 
-  //create Planters id
   @Post('/:planterId/cameras/:cameraId')
   initializeCamera(
     @Param('planterId') planterId: string,
@@ -42,6 +42,16 @@ export class PlantersController {
   ) {
     console.log(body);
     return this.plantersService.createOrUpdateCamera(planterId, cameraId, body);
+  }
+
+  @Patch('/:planterId/cameras/:cameraId')
+  updateCamera(
+    @Param('planterId') planterId: string,
+    @Param('cameraId') cameraId: string,
+    @Body() body: UpdateCameraDTO,
+  ) {
+    console.log(body);
+    return this.plantersService.updateCamera(planterId, cameraId, body);
   }
 
   //create Planters id

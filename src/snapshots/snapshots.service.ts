@@ -58,7 +58,7 @@ export class SnapshotsService {
             `http://${cam.publicIP}:${cam.webPort}`,
           );
           snapshot.plantId = cam.plantId;
-          snapshot.transferredAt = cam.transplantedAt;
+          snapshot.transferredAt = cam.transferredAt;
           snapshot.numOfPixel = numOfPixel;
           snapshot.imageName = imageName;
           return snapshot.save();

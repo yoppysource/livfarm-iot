@@ -13,7 +13,7 @@ export class Snapshot {
   @Prop()
   createdAt: Date;
   @Prop()
-  transferredAt: Date;
+  transferredAt: string;
   @Prop()
   floor: number;
   @Prop()

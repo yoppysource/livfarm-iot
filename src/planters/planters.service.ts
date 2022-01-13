@@ -1,3 +1,4 @@
+import { UpdateCameraDTO } from './dto/update-camera.dto';
 import { HttpService } from '@nestjs/axios';
 import {
   Injectable,
@@ -43,8 +44,9 @@ export class PlantersService {
 
   async createOrUpdate(data: InitializePlanterDTO): Promise<Planter> {
     const planter = await this.planterModel.findOne({
-      planter: data.planterId,
+      planterId: data.planterId,
     });
+
     const farm = await this.farmModel.findById(data.farm);
 
     if (!farm) throw new NotFoundException('farm is not found');
@@ -78,6 +80,26 @@ export class PlantersService {
       ? Object.assign(existedCamera, data)
       : planter.cameras.push(data);
 
+    return planter.save();
+  }
+
+  async updateCamera(
+    planterId: string,
+    cameraId: string,
+    data: UpdateCameraDTO,
+  ) {
+    const planter = await this.planterModel.findOne({ planterId });
+
+    // if there is no such id in database
+    if (!planter) {
+      throw new NotFoundException('planter not found');
+    }
+
+    const camera = planter.cameras.find((cam) => cam.cameraId === cameraId);
+    if (!camera) throw new NotFoundException('cam not found');
+
+    Object.assign(camera, data);
+    console.log(camera);
     return planter.save();
   }
 

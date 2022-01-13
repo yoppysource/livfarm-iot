@@ -1,62 +1,47 @@
+###
 GET http://localhost:3000/planters/test2
 
 ### Get All Planters
 GET http://localhost:3000/planters
 
 ### Initialize Arduino
-POST http://localhost:3000/planters/init/test3
+//POST http://34.64.144.6:3000/planters
+POST http://127.0.0.1:3000/planters
 content-type: application/json
 
 {
-  "id": "test3",
+  "planterId": "testy11111",
+  "farm": "61b6fad5658cb24ac86cead7",
   "publicIP": "1.2.3.4",
+  "numOfFloor": 4,
   "port": 101,
   "localIP": "2.3.4.6"
 }
 
-### Get planters
+### Get planters current status
+GET http://34.64.144.6:3000/planters/61b82803be16ca6e1b9af29e/current
 
-### Get current state of the planter
-GET  http://yoppysource.ap.ngrok.io/planters/61b82803be16ca6e1b9af29e/current
 
-### get planter with farm id
-GET http://yoppysource.ap.ngrok.io/planters/farm/61b6fad5658cb24ac86cead7
-### 
-GET http://yoppysource.ap.ngrok.io/planters/61b82803be16ca6e1b9af29e/turnOff
-
-### Update settings all
-PATCH  http://yoppysource.ap.ngrok.io/planters/61b82803be16ca6e1b9af29e/setting
+### Initialize Camera
+//POST http://34.64.144.6:3000/planters/:planterId/cameras/:cameraId
+POST http://127.0.0.1:3000/planters/testy11111/cameras/sgf12-04
 content-type: application/json
 
 {
-  "ec": 2.2,
-  "turnOn" : "19:42",
-  "turnOff" : "02:10"
+  "cameraId": "sgf12-04",
+  "webPort": 101,
+  "streamingPort": 123,
+  "publicIP": "1.2.3.4",
+  "floor": 4,
+  "localIP": "2.3.4.6"
 }
 
-### Update setting only two params
-PATCH  http://yoppysource.ap.ngrok.io/planters/61b82803be16ca6e1b9af29e/setting
+### Initialize Camera
+//PATCH http://34.64.144.6:3000/planters/:planterId/cameras/:cameraId
+PATCH http://127.0.0.1:3000/planters/testy11111/cameras/sgf12-04
 content-type: application/json
 
 {
-  "ec": 0.7,
-  "turnOn" : "05:00"
+  "plantId": "ka",
+  "transferredAt": "2012-04-23T18:25:43.511Z"
 }
-
-### Update setting only one param(ec)
-PATCH  http://yoppysource.ap.ngrok.io/planters/61b82803be16ca6e1b9af29e/setting
-content-type: application/json
-
-{
-  "ec": 0.3
-}
-
-### Update setting only one param(turnOn)
-PATCH  http://yoppysource.ap.ngrok.io/planters/61b82803be16ca6e1b9af29e/setting
-content-type: application/json
-
-{
-  "turnOn": "02:00"
-}
-###
-GET http://172.30.1.41/current
