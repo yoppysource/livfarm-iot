@@ -16,7 +16,7 @@ import { LoggerMiddleware } from './middlewares/logger.middleware';
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: `.env.${process.env.NODE_ENV}`,
+      envFilePath: `.env.production`,
     }),
     MongooseModule.forRootAsync({
       inject: [ConfigService],
