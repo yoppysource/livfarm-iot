@@ -128,7 +128,6 @@ export class SnapshotsService {
         },
         function (err, results) {
           if (err) {
-            this.logger.error(err);
             reject({ success: false, err });
           }
           resolve({ success: true, results });
