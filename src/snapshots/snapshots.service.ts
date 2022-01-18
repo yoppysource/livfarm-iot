@@ -37,14 +37,21 @@ export class SnapshotsService {
     const plantersIncludeCam = (await this.planterModel.find({})).filter(
       (planter) => planter.cameras.length > 0,
     );
+    this.logger.debug(plantersIncludeCam.length);
+
     // promise.all 로 수정
     if (plantersIncludeCam) {
       for (const planter of plantersIncludeCam) {
         // How to get data from planter
+        this.logger.debug(planter);
+
         const snapshot = new this.snapshotModel();
+        this.logger.debug(planter.getUrl(['current']));
+
         const res: AxiosResponse = await lastValueFrom(
           this.httpService.get(planter.getUrl(['current'])),
         );
+
         if (res.status != 200) {
           continue;
         }
@@ -61,6 +68,7 @@ export class SnapshotsService {
           if (cam.transferredAt) snapshot.transferredAt = cam.transferredAt;
           snapshot.numOfPixel = numOfPixel;
           snapshot.imageName = imageName;
+          this.logger.debug(snapshot);
           return snapshot.save();
         }
       }
