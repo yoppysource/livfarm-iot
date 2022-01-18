@@ -120,8 +120,12 @@ export class SnapshotsService {
       results,
     } = await new Promise((resolve, reject) => {
       PythonShell.run(
-        path.join('.', 'python', 'get_pixel.py'),
-        { args: [path.join('.', 'images', `${fileName}.jpeg`)] },
+        path.join(__dirname, '..', '..', 'python', 'get_pixel.py'),
+        {
+          args: [
+            path.join(__dirname, '..', '..', 'images', `${fileName}.jpeg`),
+          ],
+        },
         function (err, results) {
           if (err) {
             this.logger.error(err);
