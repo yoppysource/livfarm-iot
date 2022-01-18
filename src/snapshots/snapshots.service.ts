@@ -17,6 +17,7 @@ import * as fs from 'fs';
 import { PythonShell } from 'python-shell';
 import { Cron, CronExpression } from '@nestjs/schedule';
 var path = require('path');
+import { once } from 'events';
 @Injectable()
 export class SnapshotsService {
   constructor(
@@ -86,17 +87,26 @@ export class SnapshotsService {
     const writeStream = fs.createWriteStream(
       path.join('.', 'images', `${fileName}.jpeg`),
     );
-
     const response: AxiosResponse = await this.httpService.axiosRef({
       url: cameraURL + '/capture',
       method: 'GET',
       responseType: 'stream',
     });
-    await response.data.pipe(transformer).pipe(writeStream);
-    // await response.data.pipe(writeStream);
+    // await response.data.pipe(transformer).pipe(writeStream);
+
+    for await (const chunk of response.data.pipe(transformer)) {
+      if (!writeStream.write(chunk)) {
+        // (B)
+        // Handle backpressure
+        await once(writeStream, 'drain');
+      }
+    }
+    writeStream.end();
+
     const result = await new Promise((resolve, reject) => {
+      console.log(path.join('.', 'images', `${fileName}.jpeg`));
       PythonShell.run(
-        path.join('.', 'python', `get_pixel.py`),
+        path.join('.', 'python', 'get_pixel.py'),
         { args: [path.join('.', 'images', `${fileName}.jpeg`)] },
         (err, results) => {
           if (err) return reject(err);
@@ -107,4 +117,9 @@ export class SnapshotsService {
     console.log(result);
     return parseInt(result[0]);
   }
+}
+
+function sleep(delay) {
+  var start = new Date().getTime();
+  while (new Date().getTime() < start + delay);
 }
