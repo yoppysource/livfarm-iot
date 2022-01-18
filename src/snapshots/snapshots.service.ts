@@ -96,8 +96,8 @@ export class SnapshotsService {
     // await response.data.pipe(writeStream);
     const result = await new Promise((resolve, reject) => {
       PythonShell.run(
-        './python/get_pixel.py',
-        { args: [`./images/${fileName}.jpeg`] },
+        path.join('.', 'python', `get_pixel.py`),
+        { args: [path.join('.', 'images', `${fileName}.jpeg`)] },
         (err, results) => {
           if (err) return reject(err);
           return resolve(results);
