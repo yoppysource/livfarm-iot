@@ -2,7 +2,7 @@
 GET http://localhost:3000/planters/test2
 
 ### Get All Planters
-GET http://localhost:3000/planters
+GET http://34.64.144.6:3000/planters
 
 ### Initialize Arduino
 POST http://34.64.144.6:3000/planters

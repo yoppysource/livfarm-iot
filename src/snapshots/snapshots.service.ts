@@ -16,6 +16,7 @@ import * as sharp from 'sharp';
 import * as fs from 'fs';
 import { PythonShell } from 'python-shell';
 import { Cron, CronExpression } from '@nestjs/schedule';
+var path = require('path');
 @Injectable()
 export class SnapshotsService {
   constructor(
@@ -82,7 +83,9 @@ export class SnapshotsService {
       width: 600,
       height: 600,
     });
-    const writeStream = fs.createWriteStream(`./images/${fileName}.jpeg`);
+    const writeStream = fs.createWriteStream(
+      path.join('.', 'images', `${fileName}.jpeg`),
+    );
 
     const response: AxiosResponse = await this.httpService.axiosRef({
       url: cameraURL + '/capture',
