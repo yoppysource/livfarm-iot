@@ -103,19 +103,40 @@ export class SnapshotsService {
     }
     writeStream.end();
 
-    const result = await new Promise((resolve, reject) => {
-      console.log(path.join('.', 'images', `${fileName}.jpeg`));
+    // const result = await new Promise((resolve, reject) => {
+    //   console.log(path.join('.', 'images', `${fileName}.jpeg`));
+    //   PythonShell.run(
+    //     path.join('.', 'python', 'get_pixel.py'),
+    //     { args: [path.join('.', 'images', `${fileName}.jpeg`)] },
+    //     (err, results) => {
+    //       if (err) return reject(err);
+    //       return resolve(results);
+    //     },
+    //   );
+    // });
+    const {
+      success,
+      err = '',
+      results,
+    } = await new Promise((resolve, reject) => {
       PythonShell.run(
         path.join('.', 'python', 'get_pixel.py'),
         { args: [path.join('.', 'images', `${fileName}.jpeg`)] },
-        (err, results) => {
-          if (err) return reject(err);
-          return resolve(results);
+        function (err, results) {
+          if (err) {
+            this.logger.error(err);
+            reject({ success: false, err });
+          }
+          resolve({ success: true, results });
         },
       );
     });
-    console.log(result);
-    return parseInt(result[0]);
+    if (success) {
+      console.log(results);
+      return parseInt(results[0]);
+    } else {
+      return -1;
+    }
   }
 }
 
