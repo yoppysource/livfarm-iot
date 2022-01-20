@@ -18,7 +18,7 @@ export class ControlService {
   async turnOn(id: string, withSetting: boolean) {
     const planter = await this.planterModel.findById(id);
     if (!planter) throw new NotFoundException('존재하지 않는 Planter입니다.');
-    if (withSetting && planter.setting.turnOn != planter.setting.turnOff) {
+    if (withSetting) {
       const [onHour, onMin] = planter.setting.turnOn.split(':');
       const turnOnTimeToMin = parseInt(onHour) * 60 + parseInt(onMin);
       const [offHour, offMin] = planter.setting.turnOff.split(':');
@@ -40,11 +40,12 @@ export class ControlService {
     return res.status;
   }
 
-  // 끄는 시간대라면 끄고, 키는 시간대라면 켜둔다
+  // turn off 트리거 하기전에는 무족선
   async turnOff(id: string, withSetting: boolean) {
     const planter = await this.planterModel.findById(id);
     if (!planter) throw new NotFoundException('존재하지 않는 Planter입니다.');
-    if (withSetting && planter.setting.turnOn != planter.setting.turnOff) {
+    if (withSetting) {
+      console.log(withSetting);
       const [onHour, onMin] = planter.setting.turnOn.split(':');
       const [offHour, offMin] = planter.setting.turnOff.split(':');
       const now = new Date();
@@ -57,15 +58,19 @@ export class ControlService {
       if (turnOnTimeToMin < turnOffTimeToMin) {
         // 켜져있는 시간대는 now가 아침보다 크고, 저녁보다 작아야한다.
         // 이경우 끄지 않는다.
-        if (turnOnTimeToMin < nowHourToMin && turnOffTimeToMin > nowHourToMin)
+        if (turnOnTimeToMin < nowHourToMin && turnOffTimeToMin > nowHourToMin) {
           return 200;
+        }
         // 저녁에키고 아침에 끈다면
       } else {
         // 켜져 있는 시간대는 저녁보다 크거나, 아침보다 작아야한다.
-        if (turnOnTimeToMin < nowHourToMin || turnOffTimeToMin > nowHourToMin)
+        if (turnOnTimeToMin < nowHourToMin || turnOffTimeToMin > nowHourToMin) {
           return 200;
+        }
       }
     }
+    console.log('no one');
+
     const res: AxiosResponse = await lastValueFrom(
       this.httpService.get(planter.getUrl(['turnOff'])),
     );

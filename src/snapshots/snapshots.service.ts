@@ -37,7 +37,7 @@ export class SnapshotsService {
       (planter) => planter.cameras.length > 0,
     );
     this.logger.debug(plantersIncludeCam.length);
-
+    const snapshots = [];
     // promise.all 로 수정
     if (plantersIncludeCam) {
       for (const planter of plantersIncludeCam) {
@@ -74,16 +74,15 @@ export class SnapshotsService {
           snapshot.numOfPixel = numOfPixel;
           snapshot.imageName = imageName;
           this.logger.debug(snapshot);
-          return snapshot.save();
+          await snapshot.save();
+          snapshots.push(snapshot);
         }
       }
-
       for (const planter of plantersIncludeCam) {
         await this.controlService.turnOff(planter.id, true);
-        // How to get data from planter
-        this.logger.debug(planter);
       }
     }
+    return snapshots;
   }
 
   async getPixelAndSaveImage(fileName: string, cameraURL: string) {
