@@ -53,6 +53,8 @@ export class ControlService {
       const turnOnTimeToMin = parseInt(onHour) * 60 + parseInt(onMin);
       const turnOffTimeToMin = parseInt(offHour) * 60 + parseInt(offMin);
       const nowHourToMin = now.getHours() * 60 + now.getMinutes();
+      console.log('turnOn' + turnOnTimeToMin);
+      console.log('turnOff' + turnOffTimeToMin);
 
       //아침에 키고 저녁에 끈다면
       if (turnOnTimeToMin < turnOffTimeToMin) {
@@ -63,8 +65,14 @@ export class ControlService {
         }
         // 저녁에키고 아침에 끈다면
       } else {
+        console.log('nowHourToMin' + nowHourToMin);
+        console.log('turnOff' + turnOffTimeToMin);
+        console.log('turnOn' + turnOnTimeToMin);
+
         // 켜져 있는 시간대는 저녁보다 크거나, 아침보다 작아야한다.
         if (turnOnTimeToMin < nowHourToMin || turnOffTimeToMin > nowHourToMin) {
+          console.log(200);
+
           return 200;
         }
       }
