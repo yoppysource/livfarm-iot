@@ -9,24 +9,6 @@ export class SnapshotsController {
   findSnaphots() {
     return this.snapshotsService.findAll();
   }
-
-  // @Post('/images/:planterId/:floor')
-  // async createSnapshot(
-  //   @Param('planterId') planterId: string,
-  //   @Param('floor') floor: string,
-  //   @Body() body,
-  //   @Req() req,
-  // ) {
-  //   // we have to check req.readable because of raw-body issue #57
-  //   // https://github.com/stream-utils/raw-body/issues/57
-  //   if (req.readable) {
-  //     // body is ignored by NestJS -> get raw body from request
-  //     const raw = await rawbody(req);
-  //     body = raw.toString().trim();
-  //   }
-
-  //   return this.snapshotsService.create(body, planterId, parseInt(floor));
-  // }
   @Get('/test')
   async createSnapshot() {
     return this.snapshotsService.createSnapshotsPeriodically();

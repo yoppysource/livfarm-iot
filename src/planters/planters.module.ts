@@ -28,5 +28,6 @@ import { Farm, FarmSchema } from 'src/schemas/farm.schema';
   ],
   controllers: [PlantersController],
   providers: [PlantersService, ControlService],
+  exports: [ControlService],
 })
 export class PlantersModule {}

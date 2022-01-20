@@ -1,14 +1,8 @@
 import { HttpService } from '@nestjs/axios';
-import {
-  Inject,
-  Injectable,
-  Logger,
-  NotFoundException,
-  RequestTimeoutException,
-} from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { AxiosResponse } from 'axios';
-import { model, Model } from 'mongoose';
+import { Model } from 'mongoose';
 import { lastValueFrom } from 'rxjs';
 import { Planter } from 'src/schemas/planter.schema';
 import { Snapshot } from 'src/schemas/snapshot.schema';
@@ -18,6 +12,7 @@ import { PythonShell } from 'python-shell';
 import { Cron, CronExpression } from '@nestjs/schedule';
 var path = require('path');
 import { once } from 'events';
+import { ControlService } from 'src/planters/control.service';
 @Injectable()
 export class SnapshotsService {
   constructor(
@@ -26,6 +21,7 @@ export class SnapshotsService {
     @InjectModel(Planter.name)
     private planterModel: Model<Planter>,
     private httpService: HttpService,
+    private controlService: ControlService,
   ) {}
   private readonly logger = new Logger(SnapshotsService.name);
 
@@ -33,9 +29,9 @@ export class SnapshotsService {
     return this.snapshotModel.find().exec();
   }
 
-  @Cron(CronExpression.EVERY_4_HOURS)
+  @Cron(CronExpression.EVERY_HOUR)
   async createSnapshotsPeriodically() {
-    this.logger.debug('Call create Snapshot every 4 hours');
+    this.logger.debug('Call create Snapshot every 1 hours');
     const plantersIncludeCam = (await this.planterModel.find({})).filter(
       (planter) => planter.cameras.length > 0,
     );
@@ -44,9 +40,13 @@ export class SnapshotsService {
     // promise.all 로 수정
     if (plantersIncludeCam) {
       for (const planter of plantersIncludeCam) {
+        await this.controlService.turnOn(planter.id, true);
         // How to get data from planter
         this.logger.debug(planter);
+      }
+      await new Promise((resolve) => setTimeout(resolve, 5000));
 
+      for (const planter of plantersIncludeCam) {
         const snapshot = new this.snapshotModel();
         this.logger.debug(planter.getUrl(['current']));
 
@@ -73,6 +73,12 @@ export class SnapshotsService {
           this.logger.debug(snapshot);
           return snapshot.save();
         }
+      }
+
+      for (const planter of plantersIncludeCam) {
+        await this.controlService.turnOff(planter.id, true);
+        // How to get data from planter
+        this.logger.debug(planter);
       }
     }
   }
@@ -141,9 +147,4 @@ export class SnapshotsService {
       return -1;
     }
   }
-}
-
-function sleep(delay) {
-  var start = new Date().getTime();
-  while (new Date().getTime() < start + delay);
 }

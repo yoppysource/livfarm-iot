@@ -73,11 +73,11 @@ export class PlantersController {
 
   @Get('/:id/turnOn')
   async turnOn(@Param('id') id: string) {
-    return this.controlService.turnOn(id, true);
+    return this.controlService.turnOn(id, false);
   }
 
   @Get('/:id/turnOff')
   async turnOff(@Param('id') id: string) {
-    return this.controlService.turnOff(id);
+    return this.controlService.turnOff(id, false);
   }
 }

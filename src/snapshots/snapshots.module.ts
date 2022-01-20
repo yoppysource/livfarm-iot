@@ -1,3 +1,4 @@
+import { PlantersModule } from './../planters/planters.module';
 import { HttpModule } from '@nestjs/axios';
 import { Module } from '@nestjs/common';
 import { SnapshotsService } from './snapshots.service';
@@ -19,6 +20,7 @@ import { Snapshot, SnapshotSchema } from 'src/schemas/snapshot.schema';
         schema: SnapshotSchema,
       },
     ]),
+    PlantersModule,
   ],
   providers: [SnapshotsService],
   controllers: [SnapshotsController],

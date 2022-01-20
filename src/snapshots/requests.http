@@ -18,6 +18,6 @@ content-type: application/json
 }
 
 ### Create Snapshots
-GET  http://34.64.144.6:3000/snapshots/test
+GET  http://34.64.102.76:3000/snapshots/test
 ### Create Snapshots  
 GET http://localhost:3000/snapshots/test
