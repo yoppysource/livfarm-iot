@@ -24,6 +24,7 @@ export class ControlService {
       const [offHour, offMin] = planter.setting.turnOff.split(':');
       const turnOffTimeToMin = parseInt(offHour) * 60 + parseInt(offMin);
       const now = new Date();
+      now.setHours(now.getHours() + 9);
       const nowHourToMin = now.getHours() * 60 + now.getMinutes();
       if (turnOnTimeToMin < turnOffTimeToMin) {
         if (turnOnTimeToMin < nowHourToMin && turnOffTimeToMin > nowHourToMin)
@@ -47,6 +48,7 @@ export class ControlService {
       const [onHour, onMin] = planter.setting.turnOn.split(':');
       const [offHour, offMin] = planter.setting.turnOff.split(':');
       const now = new Date();
+      now.setHours(now.getHours() + 9);
       const turnOnTimeToMin = parseInt(onHour) * 60 + parseInt(onMin);
       const turnOffTimeToMin = parseInt(offHour) * 60 + parseInt(offMin);
       const nowHourToMin = now.getHours() * 60 + now.getMinutes();
