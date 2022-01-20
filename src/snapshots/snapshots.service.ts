@@ -94,7 +94,7 @@ export class SnapshotsService {
       height: 600,
     });
     const writeStream = fs.createWriteStream(
-      path.join('.', 'images', `${fileName}.jpeg`),
+      path.join(__dirname, '..', '..', 'images', `${fileName}.jpeg`),
     );
     const response: AxiosResponse = await this.httpService.axiosRef({
       url: cameraURL + '/capture',
