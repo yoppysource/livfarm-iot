@@ -13,6 +13,7 @@ import { Cron, CronExpression } from '@nestjs/schedule';
 var path = require('path');
 import { once } from 'events';
 import { ControlService } from 'src/planters/control.service';
+
 @Injectable()
 export class SnapshotsService {
   constructor(
@@ -59,9 +60,11 @@ export class SnapshotsService {
         }
         Object.assign(snapshot, res.data);
         for (const cam of planter.cameras) {
-          const now = new Date();
-          snapshot.createdAt = now;
-          const imageName = `${cam.cameraId}_${Date.now()}`;
+          const current = new Date();
+          current.setHours(current.getHours() + 9);
+
+          snapshot.createdAt = current;
+          const imageName = `${cam.cameraId}_${current.getTime()}`;
           const numOfPixel = await this.getPixelAndSaveImage(
             imageName,
             `http://${cam.publicIP}:${cam.webPort}`,
