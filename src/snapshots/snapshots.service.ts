@@ -41,7 +41,7 @@ export class SnapshotsService {
     // promise.all 로 수정
     if (plantersIncludeCam) {
       for (const planter of plantersIncludeCam) {
-        await this.controlService.turnOn(planter.id, true);
+        await this.controlService.turnOn(planter.id, false);
         // How to get data from planter
         this.logger.debug(planter);
       }
